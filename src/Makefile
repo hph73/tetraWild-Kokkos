@@ -10,10 +10,8 @@ SRC = $(wildcard *.cpp)
 default: build
 	echo "Start Build"
 
-CXX=g++
-# CXX=mpic++
-# MPI_LIB=/usr/local/lib/libmpi.so
-# MPI_OPT=-DENABLE_MPI
+# CXX=g++
+CXX=mpic++
 
 EXE = main
 
