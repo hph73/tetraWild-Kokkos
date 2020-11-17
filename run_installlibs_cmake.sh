@@ -5,7 +5,8 @@ rm -r CMakeCache.txt CMakeFiles cmake_install.cmake
 KOKKOS_PATH=${HOME}/Kokkos/kokkos
 KOKKOSKERNELS_PATH=${HOME}/Kokkos/kokkos-kernels
 
-KOKKOS_DEVICES="Cuda,OpenMP"
+# KOKKOS_DEVICES="Cuda,OpenMP"
+KOKKOS_DEVICES="OpenMP"
 CXX=
 KOKKOS_ARCH=
 TPLS=

@@ -143,6 +143,7 @@ int runfTetWild(std::string input_path, double ideal_edge_length_rel, double eps
   json tree_with_ids;
   std::vector<std::string> meshes;
 
+  std::cout << "================== loading mesh =====================" << std::endl;
   if (params.input_path.length() > 0) {
     if (!MeshIO::load_mesh(params.input_path, input_vertices, input_faces, sf_mesh, input_tags)) {
         logger().error("Unable to load mesh at {}", params.input_path);
@@ -169,6 +170,7 @@ int runfTetWild(std::string input_path, double ideal_edge_length_rel, double eps
   stats().record(StateInfo::init_id, 0, input_vertices.size(), input_faces.size(), -1, -1);
 
   timer.start();
+  std::cout << "================== simplify =====================" << std::endl;
   simplify(input_vertices, input_faces, input_tags, tree, params, skip_simplify);
   tree.init_b_mesh_and_tree(input_vertices, input_faces, mesh);
   logger().info("preprocessing {}s", timer.getElapsedTimeInSec());
@@ -179,6 +181,7 @@ int runfTetWild(std::string input_path, double ideal_edge_length_rel, double eps
     output_component(input_vertices, input_faces, input_tags);
 
   timer.start();
+  std::cout << "================== tetrahedralize =====================" << std::endl;
   std::vector<bool> is_face_inserted(input_faces.size(), false);
   FloatTetDelaunay::tetrahedralize(input_vertices, input_faces, tree, mesh, is_face_inserted);
   logger().info("#v = {}", mesh.get_v_num());
@@ -188,6 +191,7 @@ int runfTetWild(std::string input_path, double ideal_edge_length_rel, double eps
   stats().record(StateInfo::tetrahedralization_id, timer.getElapsedTimeInSec(), mesh.get_v_num(), mesh.get_t_num(), -1, -1);
 
   timer.start();
+  std::cout << "================== insert_triangles =====================" << std::endl;
   insert_triangles(input_vertices, input_faces, input_tags, mesh, is_face_inserted, tree, false);
   logger().info("cutting {}s", timer.getElapsedTimeInSec());
   logger().info("");
@@ -196,6 +200,7 @@ int runfTetWild(std::string input_path, double ideal_edge_length_rel, double eps
     std::count(is_face_inserted.begin(), is_face_inserted.end(), false));
 
   timer.start();
+  std::cout << "================== optimization =====================" << std::endl;
   optimization(input_vertices, input_faces, input_tags, is_face_inserted, mesh, tree, {{1, 1, 1, 1}});
   logger().info("mesh optimization {}s", timer.getElapsedTimeInSec());
   logger().info("");
@@ -203,6 +208,7 @@ int runfTetWild(std::string input_path, double ideal_edge_length_rel, double eps
     mesh.get_max_energy(), mesh.get_avg_energy());
 
   timer.start();
+  std::cout << "================== correct_tracked_surface_orientation =====================" << std::endl;
   correct_tracked_surface_orientation(mesh, tree);
   logger().info("correct_tracked_surface_orientation done");
 
@@ -213,6 +219,7 @@ int runfTetWild(std::string input_path, double ideal_edge_length_rel, double eps
         t.is_removed = true;
     }
   } else {
+    std::cout << "================== filter_outside =====================" << std::endl;
     elements.resize(mesh.tets.size(), 4);
     material.resize(mesh.tets.size()); material.fill(0);
     for (size_t i = 0; i < mesh.tets.size(); i++) {
