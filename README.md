@@ -3,17 +3,19 @@ Static libraries in folder lib and header files in folder include are from fTetr
 
 The static libraries are compliled on Linux Centos. You may need to build fTetrawild on your machine to get those static libraries.
 
-Besides GMP library (https://gmplib.org/) is needed. To install
-
-To build the project, simply run
+Besides GMP library (https://gmplib.org/) is needed. To install simply run
 
 sudo yum install gmp 
 
+To build the project, simply run
+
 ./run_installlibs_cmake.sh
+
+&
 
 make
 
-To run the code, simply
+To run the code, simply run
 
 ./main
 
