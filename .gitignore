@@ -1,1 +1,6 @@
-*.o
+LibInstalls/
+CMakeFiles/
+main
+cmake_install.cmake
+*.msh
+CMakeCache.txt
